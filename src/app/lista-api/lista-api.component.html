@@ -1,0 +1,94 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow-lg bg-dark text-white">
+        <div class="card-header bg-secondary">
+          <h4 class="m-0">Lista de Tareas</h4>
+        </div>
+
+        <div class="card-body">
+          <div class="mb-4">
+            <input
+              type="text"
+              class="form-control mb-2"
+              [(ngModel)]="nuevaTarea.nombre"
+              placeholder="Título de la tarea"
+            />
+            <textarea
+              class="form-control mb-2"
+              [(ngModel)]="nuevaTarea.descripcion"
+              placeholder="Descripción de la tarea"
+              rows="3"
+            ></textarea>
+            <button
+              class="btn btn-outline-primary w-100 mt-2"
+              (click)="agregarTarea()"
+            >
+              Agregar tarea
+            </button>
+          </div>
+
+          <!-- Lista de tareas -->
+          <ul class="list-group list-group-flush">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white"
+              *ngFor="let tarea of Tareas"
+            >
+              <div
+                class="d-flex w-100 justify-content-between align-items-center"
+              >
+                <div class="form-check me-2">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="check-{{ tarea.idTarea }}"
+                    [(ngModel)]="tarea.completada"
+                    (change)="
+                      actualizarEstadoTarea(
+                        tarea.idTarea,
+                        tarea.nombre,
+                        tarea.descripcion,
+                        tarea.completada
+                      )
+                    "
+                  />
+
+                  <label
+                    class="form-check-label"
+                    for="check-{{ tarea.idTarea }}"
+                  ></label>
+                </div>
+
+                <div class="w-75">
+                  <span
+                    (click)="toggleDescripcion(tarea.idTarea)"
+                    class="cursor-pointer font-weight-bold"
+                    [ngClass]="{
+                      'text-decoration-line-through': tarea.completada
+                    }"
+                  >
+                    {{ tarea.nombre }}
+                  </span>
+                  <div *ngIf="tarea.mostrarDescripcion" class="mt-2 ps-3">
+                    <div class="text-light">{{ tarea.descripcion }}</div>
+                  </div>
+                </div>
+
+                <button
+                  class="btn btn-outline-danger btn-sm rounded-pill"
+                  (click)="eliminarTarea(tarea.idTarea)"
+                >
+                  Eliminar
+                </button>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card-footer bg-secondary">
+          <small class="text-muted">Total de tareas: {{ Tareas.length }}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
